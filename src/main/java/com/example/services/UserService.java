@@ -5,7 +5,7 @@ import com.example.entities.User;
 import java.util.List;
 
 public interface UserService {
-    public User createUser(User user);
+    User createUser(User user);
 
     List<User> getAllUsers();
 
