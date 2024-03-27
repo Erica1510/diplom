@@ -3,17 +3,17 @@ package com.example.services.serviceImpl;
 import com.example.entities.User;
 import com.example.repositories.UserRepository;
 import com.example.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
     @Override
     public User createUser(User user) {
         return userRepository.save(user);

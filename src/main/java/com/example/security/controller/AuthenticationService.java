@@ -1,5 +1,6 @@
 package com.example.security.controller;
 
+import com.example.entities.User;
 import com.example.repositories.UserRepository;
 import com.example.security.config.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +8,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.example.entities.User;
 
 @Service
 @RequiredArgsConstructor
