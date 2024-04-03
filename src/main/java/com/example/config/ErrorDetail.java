@@ -6,11 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorDetail  {
+public class ErrorDetail {
     private Date timestamp;
     private String message;
     private String details;
