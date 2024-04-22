@@ -18,7 +18,9 @@ public class ChatRoom {
     @Column(name = "room_id")
     private Long roomId;
     private String name;
-
+    private MessageType type;
+    private String content;
+    private String sender;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "room_users", schema = "diplom",

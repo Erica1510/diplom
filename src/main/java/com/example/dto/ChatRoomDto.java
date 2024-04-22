@@ -1,6 +1,7 @@
 package com.example.dto;
 
 import com.example.entities.ChatRoom;
+import com.example.entities.MessageType;
 import com.example.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,9 @@ import java.util.stream.Collectors;
 public class ChatRoomDto {
     private Long roomId;
     private String name;
+    private MessageType type;
+    private String content;
+    private String sender;
     private List<UserDto> users = new ArrayList<>();
 
     public static ChatRoomDto chatRoomDtoToEntity(ChatRoom chatRoom){

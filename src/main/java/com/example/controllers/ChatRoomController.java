@@ -1,9 +1,15 @@
 package com.example.controllers;
 
 import com.example.dto.ChatRoomDto;
+import com.example.dto.UserDto;
+import com.example.entities.ChatRoom;
 import com.example.services.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +44,28 @@ public class ChatRoomController {
         ChatRoomDto updatedRoom = chatRoomService.update(id, updatedChatRoom);
         return ResponseEntity.ok(updatedRoom);
     }
+    @MessageMapping("/chat.sendMessage")
+    @SendTo("/topic/public")
+    public ChatRoomDto sendMessage(
+            
+            @Payload ChatRoomDto chatMessage
+    ) {
+        return chatMessage;
+    }
 
+    @MessageMapping("/chat.addUser")
+    @SendTo("/topic/public")
+    public ChatRoomDto addUser(
+            @Payload ChatRoomDto chatMessage,
+            SimpMessageHeaderAccessor headerAccessor
+    ) {
+        // Add username in web socket session
+        headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
+        return chatMessage;
+    }
+    @PatchMapping("/add-users/{chatRoomId}")
+    public ResponseEntity<ChatRoomDto> addUserToChat(@RequestBody ChatRoomDto chatRoomDto , @PathVariable Long chatRoomId){
+        return ResponseEntity.ok(chatRoomService.addUserToChat(chatRoomDto,chatRoomId));
+    }
 
 }

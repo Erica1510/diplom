@@ -1,16 +1,19 @@
-package com.example.services;
+package com.example.services.serviceImpl;
 
 import com.example.dto.ChatRoomDto;
 import com.example.dto.UserDto;
 import com.example.entities.ChatRoom;
 import com.example.entities.User;
 import com.example.exception.ChatRoomNotFoundException;
+import com.example.exception.UsernameNotFoundException;
 import com.example.repositories.ChatRoomRepository;
 import com.example.repositories.UserRepository;
+import com.example.services.ChatRoomService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,10 +34,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Override
     @Transactional
     public ChatRoomDto save(ChatRoomDto chatRoom) {
-        List<User> users = findUsersById(chatRoom.getUsers());
-        ChatRoom chatRoomSaved = buildChatRoom(chatRoom, users);
-        chatRoomSaved.setUsers(users);
-
+        ChatRoom chatRoomSaved = buildChatRoom(chatRoom);
         return ChatRoomDto.chatRoomDtoToEntity(chatRoomRepository.save(chatRoomSaved));
     }
 
@@ -65,10 +65,29 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         existingRoom.setName(updatedChatRoom.getName());
         List<User> currentUsers = existingRoom.getUsers();
         List<User> newUsers = findUsersById(updatedChatRoom.getUsers());
-        // Add new users to the chat room
         currentUsers.addAll(newUsers);
         existingRoom.setUsers(currentUsers);
         return ChatRoomDto.chatRoomDtoToEntity(chatRoomRepository.save(existingRoom));
+    }
+
+    @Override
+    @Transactional
+    public ChatRoomDto addUserToChat(ChatRoomDto chatRoomDto, Long chatRoomId) {
+        List<User> users = findUsersById(chatRoomDto.getUsers());
+        ChatRoom chatRoom = findChatRoom(chatRoomId);
+        chatRoom.setUsers(users);
+        return ChatRoomDto.chatRoomDtoToEntity(chatRoomRepository.save(chatRoom));
+    }
+
+    private ChatRoom findChatRoom(Long chatRoomId){
+        return chatRoomRepository.findById(chatRoomId).orElseThrow(
+                ()-> new ChatRoomNotFoundException("Chat Room with id " + chatRoomId + " was not found")
+        );
+    }
+
+    private User findUser(String username) {
+        return userRepository.findByUsername(username).orElseThrow(
+                () -> new UsernameNotFoundException("User with username " + username + " was not found"));
     }
 
     private List<User> findUsersById(List<UserDto> users) {
@@ -78,12 +97,11 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         return userRepository.findAllById(usersIds);
     }
 
-    private ChatRoom buildChatRoom(ChatRoomDto chatRoom, List<User> currentUsers) {
+    private ChatRoom buildChatRoom(ChatRoomDto chatRoom) {
 
         return ChatRoom.builder()
                 .roomId(chatRoom.getRoomId())
                 .name(chatRoom.getName())
-                .users(currentUsers)
                 .build();
     }
 }

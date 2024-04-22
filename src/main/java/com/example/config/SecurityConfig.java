@@ -35,6 +35,8 @@ public class SecurityConfig {
     private static final String USER_ENDPOINT = "/users";
     private static final String ROOM_ENDPOINT = "api/v1/room/**";
     private static final String ALL_ROOM_ENDPOINT = "api/v1/room/all";
+    private static final String ADD_USER_TO_CHAT = "api/v1/room/add-users/{chatRoomId}";
+    private static final String SEND_MESSAGE = "api/v1/room/send-message";
 
 
     private final JwtAuthFilter jwtAuthFilter;

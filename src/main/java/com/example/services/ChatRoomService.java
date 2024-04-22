@@ -15,4 +15,5 @@ public interface ChatRoomService {
     Optional<ChatRoomDto> deleteById(Long id);
     ChatRoomDto update(Long id, ChatRoomDto updatedChatRoom);
 
+    ChatRoomDto addUserToChat(ChatRoomDto chatRoomDto, Long chatRoomId);
 }
