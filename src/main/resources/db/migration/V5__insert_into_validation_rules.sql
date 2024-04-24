@@ -12,3 +12,7 @@ INSERT INTO validation_rules (name, rule)
 VALUES ('PHONE_NUMBER', '^\+[1-9]{1}[0-9]{3,14}$');
 INSERT INTO validation_rules (name, rule)
 VALUES ('EMAIL', '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+INSERT INTO validation_rules (name, rule)
+VALUES ('IS_ACTIVE_CHAT', 'null');
+INSERT INTO validation_rules (name, rule)
+VALUES ('STATUS', 'null');

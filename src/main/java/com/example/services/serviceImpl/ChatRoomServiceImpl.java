@@ -13,7 +13,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,7 +42,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         return chatRoomRepository.findAll()
                 .stream()
                 .map(ChatRoomDto::chatRoomDtoToEntity)
-                .collect(Collectors.toList());}
+                .collect(Collectors.toList());
+    }
 
     @Override
     @Transactional
@@ -56,6 +56,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
             throw new ChatRoomNotFoundException("Chat with id " + id + " was not found");
         }
     }
+
     @Override
     @Transactional
     public ChatRoomDto update(Long id, ChatRoomDto updatedChatRoom) {
@@ -67,7 +68,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         List<User> newUsers = findUsersById(updatedChatRoom.getUsers());
         currentUsers.addAll(newUsers);
         existingRoom.setUsers(currentUsers);
-        return ChatRoomDto.chatRoomDtoToEntity(chatRoomRepository.save(existingRoom));
+        return ChatRoomDto.chatRoomDtoToEntityWIthUsers(chatRoomRepository.save(existingRoom));
     }
 
     @Override
@@ -76,12 +77,12 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         List<User> users = findUsersById(chatRoomDto.getUsers());
         ChatRoom chatRoom = findChatRoom(chatRoomId);
         chatRoom.setUsers(users);
-        return ChatRoomDto.chatRoomDtoToEntity(chatRoomRepository.save(chatRoom));
+        return ChatRoomDto.chatRoomDtoToEntityWIthUsers(chatRoomRepository.save(chatRoom));
     }
 
-    private ChatRoom findChatRoom(Long chatRoomId){
+    private ChatRoom findChatRoom(Long chatRoomId) {
         return chatRoomRepository.findById(chatRoomId).orElseThrow(
-                ()-> new ChatRoomNotFoundException("Chat Room with id " + chatRoomId + " was not found")
+                () -> new ChatRoomNotFoundException("Chat Room with id " + chatRoomId + " was not found")
         );
     }
 

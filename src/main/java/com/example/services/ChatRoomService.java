@@ -13,6 +13,7 @@ public interface ChatRoomService {
     List<ChatRoomDto> findAll();
 
     Optional<ChatRoomDto> deleteById(Long id);
+
     ChatRoomDto update(Long id, ChatRoomDto updatedChatRoom);
 
     ChatRoomDto addUserToChat(ChatRoomDto chatRoomDto, Long chatRoomId);

@@ -5,8 +5,6 @@ import com.example.security.CorsFilter;
 import com.example.security.FilterChainExceptionHandler;
 import com.example.security.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -48,13 +46,12 @@ public class SecurityConfig {
     private final CorsFilter corsFilter;
 
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers(REGISTRATION_ENDPOINT,ALL_ROOM_ENDPOINT, AUTHENTICATION_ENDPOINT, USER_ENDPOINT,ROOM_ENDPOINT).permitAll()
+                        auth -> auth.requestMatchers(REGISTRATION_ENDPOINT, ALL_ROOM_ENDPOINT, AUTHENTICATION_ENDPOINT, USER_ENDPOINT, ROOM_ENDPOINT).permitAll()
                                 .anyRequest().authenticated()
                 ).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())

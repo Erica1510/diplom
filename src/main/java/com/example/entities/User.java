@@ -2,8 +2,6 @@ package com.example.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import java.util.List;
 
@@ -26,6 +24,9 @@ public class User {
     private String lastName;
     private String email;
     private String username;
+    private String status;
+    @Column(name = "is_active_chat")
+    private Boolean isActiveChat;
     @Column(name = "password")
     private String password;
     @Column(name = "password_confirm")

@@ -7,6 +7,7 @@ import com.example.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +44,21 @@ public class UserServiceImpl implements UserService {
             return userRepository.save(existingUser);
         }
         return null;
+    }
+
+    @Override
+    public List<User> getAllOtherUsers(Long userId) {
+        List<User> users = userRepository.findByUserIdNot(userId);
+        List<User> userModels = new ArrayList<>();
+        users.forEach(user -> {
+            User userModel = new User();
+            userModel.setUserId(user.getUserId());
+            userModel.setUsername(user.getUsername());
+
+            userModel.setIsActiveChat(false);
+            userModels.add(userModel);
+        });
+        return userModels;
     }
 
     @Override

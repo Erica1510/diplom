@@ -74,6 +74,7 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.toList());
         return new ResponseEntity<>(validationExceptionResponses, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(ChatRoomNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleChatRoomNotFoundException(ChatRoomNotFoundException e, HttpServletRequest request) {
         ErrorResponse errorResponse = ErrorResponse.builder()
