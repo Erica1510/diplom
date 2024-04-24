@@ -6,6 +6,7 @@ import com.example.repositories.PublicMessageRepository;
 import com.example.repositories.UserRepository;
 import com.example.services.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,14 +19,16 @@ public class MessageServiceImpl implements MessageService {
     private final PublicMessageRepository publicMessageRepository;
     private final PrivateMessageRepository privateMessageRepository;
     private final UserRepository userRepository;
+    private final SimpMessageSendingOperations messagingTemplate;
 
     @Autowired
     public MessageServiceImpl(PublicMessageRepository publicMessageRepository,
                               PrivateMessageRepository privateMessageRepository,
-                              UserRepository userRepository) {
+                              UserRepository userRepository, SimpMessageSendingOperations messagingTemplate) {
         this.publicMessageRepository = publicMessageRepository;
         this.privateMessageRepository = privateMessageRepository;
         this.userRepository = userRepository;
+        this.messagingTemplate = messagingTemplate;
     }
 
     @Override
@@ -39,8 +42,9 @@ public class MessageServiceImpl implements MessageService {
                 message.getMessage()
         );
         publicMessageRepository.save(publicMessage);
+        // Publish the message to WebSocket topic
+        messagingTemplate.convertAndSend("/topic/public", message);
     }
-
     @Override
     public List<MessageModel> getAllChatRoomMessages() {
         List<PublicMessage> publicMessages = publicMessageRepository.findAll();

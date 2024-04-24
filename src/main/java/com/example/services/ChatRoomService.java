@@ -17,4 +17,5 @@ public interface ChatRoomService {
     ChatRoomDto update(Long id, ChatRoomDto updatedChatRoom);
 
     ChatRoomDto addUserToChat(ChatRoomDto chatRoomDto, Long chatRoomId);
+    Optional<ChatRoomDto> findByNameChatRoom(String name);
 }

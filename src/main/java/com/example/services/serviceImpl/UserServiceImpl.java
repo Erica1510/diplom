@@ -4,12 +4,14 @@ import com.example.dto.UserDto;
 import com.example.entities.User;
 import com.example.repositories.UserRepository;
 import com.example.services.UserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,14 +19,17 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    @Override
-    public User createUser(User user) {
-        return userRepository.save(user);
-    }
+//    @Override
+//    public User createUser(User user) {
+//        return userRepository.save(user);
+//
+//    }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(UserDto::fromUserDto)
+                .collect(Collectors.toList());
     }
 
     @Override

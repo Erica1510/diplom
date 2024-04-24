@@ -4,8 +4,11 @@ import com.example.controllers.RegisterRequest;
 import com.example.dto.UserDto;
 import com.example.entities.Role;
 import com.example.entities.User;
+import com.example.exception.ChatRoomNotFoundException;
+import com.example.exception.UserAlreadyExistsException;
 import com.example.repositories.UserRepository;
 import com.example.services.RegisterService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,7 +20,9 @@ public class RegisterServiceImpl implements RegisterService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public UserDto register(RegisterRequest request) {
+        checkIfUserAlreadyExists(request);
         User user = buildUser(request);
         return UserDto.fromUserDto(repository.save(user));
     }
@@ -32,5 +37,10 @@ public class RegisterServiceImpl implements RegisterService {
                 .username(request.getUsername())
                 .role(Role.USER)
                 .build();
+    }
+    private  void checkIfUserAlreadyExists(RegisterRequest request){
+        if(repository.existsByUsername(request.getUsername())){
+            throw new UserAlreadyExistsException("User  with username " + request.getUsername() + " already exists");
+        }
     }
 }

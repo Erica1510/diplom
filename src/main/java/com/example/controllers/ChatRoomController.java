@@ -51,6 +51,10 @@ public class ChatRoomController {
     public ResponseEntity<Optional<ChatRoomDto>> findById(@PathVariable Long id) {
         return ResponseEntity.ok(chatRoomService.findById(id));
     }
+    @GetMapping("/{name}")
+    public ResponseEntity<Optional<ChatRoomDto>> findByNameChatRoom(@PathVariable String name) {
+        return ResponseEntity.ok(chatRoomService.findByNameChatRoom(name));
+    }
 
     @PostMapping()
     public ResponseEntity<ChatRoomDto> saveRoom(@RequestBody ChatRoomDto chatRoom) {

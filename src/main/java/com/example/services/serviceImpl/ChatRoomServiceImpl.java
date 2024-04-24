@@ -85,7 +85,12 @@ public class ChatRoomServiceImpl implements ChatRoomService {
                 () -> new ChatRoomNotFoundException("Chat Room with id " + chatRoomId + " was not found")
         );
     }
-
+    @Override
+    public Optional<ChatRoomDto> findByNameChatRoom(String name) {
+        return Optional.ofNullable(ChatRoomDto.chatRoomDtoToEntity(chatRoomRepository.findByName(name).orElseThrow(
+                () -> new ChatRoomNotFoundException("Chat Room with name " + name + " was not found"))
+        ));
+    }
     private User findUser(String username) {
         return userRepository.findByUsername(username).orElseThrow(
                 () -> new UsernameNotFoundException("User with username " + username + " was not found"));

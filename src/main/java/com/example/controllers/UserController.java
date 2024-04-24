@@ -1,5 +1,6 @@
 package com.example.controllers;
 
+import com.example.dto.UserDto;
 import com.example.entities.User;
 import com.example.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -9,18 +10,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("api/v1")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
 
-    @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
-    }
+//    @PostMapping
+//    public User createUser(@RequestBody User user) {
+//        return userService.createUser(user);
+//    }
 
-    @GetMapping
-    public List<User> getAllUsers() {
+    @GetMapping("/all-users")
+    public List<UserDto> getAllUsers() {
         return userService.getAllUsers();
     }
 
