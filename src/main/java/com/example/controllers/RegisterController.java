@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("/register")
 @RequiredArgsConstructor
 public class RegisterController {
 
     private final RegisterService service;
     private final UserService userService;
 
-    @PostMapping("/register")
+    @PostMapping
     public ResponseEntity<UserDto> register(
             @RequestBody @Valid RegisterRequest request
     ) throws MessagingException {
