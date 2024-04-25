@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
     private final AuthenticationService service;
 
 
-    @PostMapping("/auth")
+    @PostMapping("/login")
     public ResponseEntity<AuthenticatedUserDetails> authenticate(
             @RequestBody AuthenticationRequest request
     ) {

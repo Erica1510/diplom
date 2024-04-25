@@ -9,18 +9,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("api/v1")
+@RestController
+@RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
 
-//    @PostMapping
-//    public User createUser(@RequestBody User user) {
-//        return userService.createUser(user);
-//    }
-
-    @GetMapping("/all-users")
+    @GetMapping
     public List<UserDto> getAllUsers() {
         return userService.getAllUsers();
     }

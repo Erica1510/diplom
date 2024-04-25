@@ -27,18 +27,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private static final String USER_ENDPOINT = "api/v1/all-users";
-    private static final String BY_ID_USER_ENDPOINT = "api/v1/users/{id}";
+    private static final String USER_ENDPOINT = "/user/**";
 
-    private static final String REGISTRATION_ENDPOINT = "api/v1/register/**";
-    private static final String AUTHENTICATION_ENDPOINT = "api/v1/auth/**";
-    private static final String LOGOUT_ENDPOINT = "api/v1/logout/**";
+    private static final String REGISTRATION_ENDPOINT = "/register";
+    private static final String AUTHENTICATION_ENDPOINT = "/auth/**";
 
-    private static final String ROOM_ENDPOINT = "api/v1/room/**";
-    private static final String FIND_BY_NAME_ROOM_ENDPOINT = "api/v1/room/{name}";
-    private static final String ALL_ROOM_ENDPOINT = "api/v1/room/all";
-    private static final String ADD_USER_TO_CHAT = "api/v1/room/add-users/{chatRoomId}";
-    private static final String SEND_MESSAGE = "api/v1/room/send-message";
+    private static final String ROOM_ENDPOINT = "/room/**";
 
 
     private final JwtAuthFilter jwtAuthFilter;
@@ -55,7 +49,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers(BY_ID_USER_ENDPOINT,FIND_BY_NAME_ROOM_ENDPOINT,REGISTRATION_ENDPOINT,SEND_MESSAGE,ADD_USER_TO_CHAT,LOGOUT_ENDPOINT, ALL_ROOM_ENDPOINT, AUTHENTICATION_ENDPOINT, USER_ENDPOINT, ROOM_ENDPOINT).permitAll()
+                        auth -> auth.requestMatchers(REGISTRATION_ENDPOINT, AUTHENTICATION_ENDPOINT, USER_ENDPOINT, ROOM_ENDPOINT).permitAll()
                                 .anyRequest().authenticated()
                 ).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
